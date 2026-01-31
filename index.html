@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mfangano Elite Voting System</title>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* Reset & Base */
+* { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; margin:0; padding:0; }
+body { display:flex; flex-direction:column; min-height:100vh; background:#f4f7f6; color:#1f2933;  }
+
+/* Header */
+header { background:#0f766e; color:white; padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+header h1 { margin:0; font-size:22px; }
+header span { font-size:14px; opacity:0.9; }
+
+/* Nav Tabs */
+nav { display:flex; justify-content:center; gap:12px; background:#ecfdf5; padding:10px; border-bottom:2px solid #d1fae5; }
+nav button { padding:10px 22px; border:none; border-radius:20px; cursor:pointer; background:#10b981; color:white; font-size:14px; }
+nav button.admin { background:#7c3aed; }
+
+/* Main Content */
+main { flex:1; width:100%; max-width:none; margin:30px auto; padding:0 20px; }
+
+/* Sections */
+section { display:none; }
+section.active { display:block; }
+
+/* Panel */
+.panel { background:#fff; padding:25px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:25px; }
+
+/* Grid Cards */
+.grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap:20px;
+  width:100%;
+}
+
+.grid > .card {
+  background:#fff;
+  border-radius:12px;
+  padding:25px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:140px;
+  width:100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.grid > .card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.15); }
+.grid .card h3 { margin:0; font-size:18px; color:#0f766e; }
+.grid .card p { margin:8px 0 0; font-size:24px; font-weight:bold; }
+
+/* Inputs & Buttons */
+input, select { width:100%; padding:12px; margin-bottom:15px; border-radius:6px; border:1px solid #cbd5e1; }
+.action { background:#0f766e; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; }
+.action.reset { background:#dc2626; }
+
+/* Activity log */
+.activity { max-height:200px; overflow-y:auto; border:1px solid #cbd5e1; border-radius:6px; padding:10px; }
+
+/* Charts */
+canvas { background:#f9fafb; border-radius:10px; }
+
+/* Footer */
+footer { background:#064e3b; color:white; text-align:center; padding:15px; font-size:14px; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Mfangano Elite Voting System</h1>
+  <span id="electionStatus">Election Status: ACTIVE</span>
+</header>
+
+<nav>
+  <button id="overviewBtn">Overview</button>
+  <button id="voteBtn">Vote</button>
+  <button id="adminBtn" class="admin">Admin</button>
+</nav>
+
+<main>
+
+<!-- OVERVIEW -->
+<section id="overview" class="active">
+  <div class="panel grid">
+    <div class="card"><h3>Total Votes</h3><p id="totalVotes">0</p></div>
+    <div class="card"><h3>Contestants</h3><p>10</p></div>
+    <div class="card"><h3>Election Countdown</h3><p id="countdown">--:--:--</p></div>
+    <div class="card"><h3>System Mode</h3><p>Electronic</p></div>
+  </div>
+
+  <div class="panel">
+    <h3>Election Guidelines</h3>
+    <ul>
+      <li>One voter can vote only once</li>
+      <li>Votes are confidential</li>
+      <li>Admin controls election status</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h3>Activity Log</h3>
+    <div class="activity" id="activityLog"><p>System initialized</p></div>
+  </div>
+</section>
+
+<!-- VOTER -->
+<section id="vote">
+  <div class="panel">
+    <h2>Voter Panel</h2>
+    <input type="text" id="voterNumber" placeholder="Enter Voter ID">
+    <select id="contestant">
+      <option disabled selected hidden>Choose your contestant</option>
+      <option>Edwin Sifuna</option>
+      <option>Isaac Omondi</option>
+      <option>Silas Jakakiimba</option>
+      <option>George Orebo</option>
+      <option>Hellen Jerusa</option>
+      <option>Conslate Apiyo</option>
+      <option>Mark Matunga</option>
+      <option>Debra Harriet</option>
+      <option>Berlin Brilliant</option>
+      <option>Jane Sandra</option>
+    </select>
+    <button class="action" id="submitVoteBtn">Submit Vote</button>
+  </div>
+</section>
+
+<!-- ADMIN LOGIN -->
+<section id="admin">
+  <div class="panel">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUser" placeholder="Username">
+    <input type="password" id="adminPass" placeholder="Password">
+    <button class="action" id="loginBtn">Login</button>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="panel">
+    <h2>Election Results</h2>
+    <canvas id="barChart" height="150"></canvas>
+    <canvas id="pieChart" height="150" style="margin-top:20px;"></canvas>
+    <button class="action reset" id="resetBtn" style="margin-top:15px;">Reset Election</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  © 2026 Mfangano Electoral Commission • Transparency • Integrity • Trust
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
